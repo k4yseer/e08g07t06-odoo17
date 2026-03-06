@@ -115,12 +115,16 @@ stages:
                 export dbUser=$(dbUser)
                 export dbName=$(dbName)
                 cd $(stagePath)/deploy-temp
+
                 echo "Dropping database if exists..."
                 psql -U $dbUser -d postgres -c "DROP DATABASE IF EXISTS $dbName;"
+
                 echo "Creating database..."
                 psql -U $dbUser -d postgres -c "CREATE DATABASE $dbName OWNER $dbUser;"
+
                 echo "Restoring database from uncompressed SQL..."
-                psql -U $(dbUser) -d $(dbName) -f odoo.sql
+                psql -U $dbUser -d $dbName -f odoo.sql
+
                 echo "Database restore completed!"
 
           # Run update script
