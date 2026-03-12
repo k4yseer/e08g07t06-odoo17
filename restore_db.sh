@@ -17,18 +17,18 @@ fi
 
 # Disconnect all other sessions
 echo "Disconnecting active connections to $DB_NAME..."
-postgres psql -d postgres -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname='$DB_NAME';"
+psql -d postgres -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname='$DB_NAME';"
 
 # Drop database if exists
 echo "Dropping database if it exists..."
-postgres psql -c "DROP DATABASE IF EXISTS $DB_NAME;"
+psql -c "DROP DATABASE IF EXISTS $DB_NAME;"
 
 # Create database with owner
 echo "Creating database $DB_NAME with owner $DB_USER..."
-postgres psql -c "CREATE DATABASE $DB_NAME OWNER $DB_USER;"
+psql -c "CREATE DATABASE $DB_NAME OWNER $DB_USER;"
 
 # Restore SQL file
 echo "Restoring SQL from $SQL_FILE..."
-postgres psql -d "$DB_NAME" -f "$SQL_FILE"
+psql -d "$DB_NAME" -f "$SQL_FILE"
 
 echo "Database restore completed successfully!"
